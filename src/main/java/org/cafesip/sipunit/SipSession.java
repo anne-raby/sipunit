@@ -1691,12 +1691,15 @@ public class SipSession implements SipListener, SipActionObject {
   public AuthorizationHeader getAuthorization(String method, String uri, String requestBody,
       WWWAuthenticateHeader authHeader, String username, String password) throws SecurityException {
     String response = null;
+    int nc_value = 1;
+    String cnonce = "1234";
+    String nc_value_string = "00000001";
     try {
+
       response = MessageDigestAlgorithm.calculateResponse(authHeader.getAlgorithm(), username,
           authHeader.getRealm(), new String(password), authHeader.getNonce(),
-          // TODO we should one day implement those two null-s
-          null, // nc-value
-          null, // cnonce
+          nc_value_string, // nc-value
+          cnonce, // cnonce
           method, uri, requestBody, authHeader.getQop());
     } catch (NullPointerException exc) {
       throw new SecurityException(
@@ -1715,6 +1718,9 @@ public class SipSession implements SipListener, SipActionObject {
       authorization.setUsername(username);
       authorization.setRealm(authHeader.getRealm());
       authorization.setNonce(authHeader.getNonce());
+      authorization.setCNonce(cnonce);
+      authorization.setNonceCount(nc_value);
+      authorization.setQop("auth");
       authorization.setParameter("uri", uri);
       authorization.setResponse(response);
       if (authHeader.getAlgorithm() != null)

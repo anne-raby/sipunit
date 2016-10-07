@@ -54,3 +54,9 @@ docs/sources-telscale/src/
 
 
 /bin/
+testAgent2_debug.txt
+testAgent2_log.txt
+testAgent_debug.txt
+testAgent_log.txt
+testConference_debug.txt
+testConference_log.txt
